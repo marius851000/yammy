@@ -6,6 +6,7 @@ pub struct TableDataMapBuilder {
     table_data_map: TableDataMap,
 }
 
+#[allow(clippy::new_without_default)]
 impl TableDataMapBuilder {
     pub fn new() -> Self {
         TableDataMapBuilder {

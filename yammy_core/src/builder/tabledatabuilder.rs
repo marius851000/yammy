@@ -5,6 +5,7 @@ pub struct TableDataBuilder {
     table_data: TableData,
 }
 
+#[allow(clippy::new_without_default)]
 impl TableDataBuilder {
     pub fn new() -> Self {
         TableDataBuilder {
