@@ -20,8 +20,6 @@ pub trait ModRead {
     fn get_modified_entry_list(&self, table: &str) -> Result<Vec<ID>>;
     /// Return an entry of a mod (only if it is modified/added by it)
     fn get_entry(&self, table: &str, id: &ID) -> Result<Option<&Entry>>;
-    /// Return true if the content of this mod can be changed with mean
-    fn is_writable(&self) -> bool;
     /// Return true if this value is marked as deleted by this mod
     fn is_removed(&self, table: &str, id: &ID) -> Result<bool>; //TASK: default impl from list_removed
     /// list removed element in a set

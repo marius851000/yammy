@@ -35,10 +35,6 @@ impl ModRead for DefaultMod {
         self.tabledatamap.clone()
     }
 
-    fn is_writable(&self) -> bool {
-        true
-    }
-
     fn get_modified_table_list(&self) -> Vec<String> {
         let mut modified_table = Vec::new();
         for m in self.modified_data.keys() {
@@ -183,7 +179,6 @@ fn test_defaultmod() {
 
     let mut r#mod = DefaultMod::new(metadata, tabledatamap.clone());
 
-    assert!(r#mod.is_writable());
     assert_eq!(r#mod.get_metadata().name, String::from("test_mod"));
 
     //test write
