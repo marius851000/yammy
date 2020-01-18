@@ -9,4 +9,21 @@ pub struct Metadata {
     pub description: String,
     /// The license of the mod
     pub license: String,
+    /// The permission allowed by the mod
+    pub permission: LicensePermission,
+}
+
+#[derive(PartialEq, Clone)]
+pub enum LicensePermission {
+    PublicDomain,
+    FreeShareModUse,
+    FreeShareUse,
+    OtherLicense,
+    StandardCopyright,
+}
+
+impl Default for LicensePermission {
+    fn default() -> Self {
+        LicensePermission::StandardCopyright
+    }
 }

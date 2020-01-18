@@ -20,6 +20,7 @@ pub enum ID {
 }
 
 mod metadata;
+pub use metadata::LicensePermission;
 pub use metadata::Metadata;
 
 mod entry;
