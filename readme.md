@@ -4,3 +4,8 @@ It use a modular core that may allow to use it with other game.
 
 name:
 yammy is a mix of the english word yummy, and yamm: Yet Another Mod Manager (cause I already wrote two similar mod manager).
+
+# The crates:
+## general
+- yammy_core: the core logic of how to manage mod
+- yammy_gui: the core logic for gui
