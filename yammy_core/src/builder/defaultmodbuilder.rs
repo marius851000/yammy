@@ -7,17 +7,24 @@ use crate::TableDataMap;
 use crate::ID;
 use std::sync::Arc;
 
-/// A builder for [DefaultMod]. Mainly avalaible for testing purpose, but can be used for other goal.
+/// A builder for [DefaultMod]
+///
+/// Errors will be reported at the end of the generation
+#[must_use]
 pub enum DefaultModBuilder {
     Mod(DefaultMod),
     Broken(Error),
 }
 
 impl DefaultModBuilder {
+    /// Initialize the builder
     pub fn new(metadata: Metadata, tabledatamap: Arc<TableDataMap>) -> DefaultModBuilder {
         DefaultModBuilder::Mod(DefaultMod::new(metadata, tabledatamap))
     }
 
+    /// Add a new entry in the mod
+    ///
+    /// Is equivalent to [DefaultMod::insert]
     pub fn insert(self, table: String, id: ID, value: Entry) -> DefaultModBuilder {
         match self {
             Self::Mod(mut actual_mod) => {
@@ -31,6 +38,9 @@ impl DefaultModBuilder {
         }
     }
 
+    /// Remove an entry in the mod (also work if the entry is added by a mod with a lesser priority)
+    ///
+    /// Is equivalent to [DefaultMod::remove]
     pub fn remove(self, table: String, id: ID) -> DefaultModBuilder {
         match self {
             Self::Mod(mut actual_mod) => {
@@ -44,6 +54,7 @@ impl DefaultModBuilder {
         }
     }
 
+    /// return the [DefaultMod] if the construction have well happened, an error otherwise
     pub fn get(self) -> Result<DefaultMod> {
         match self {
             Self::Mod(actual_mod) => Ok(actual_mod),
@@ -51,6 +62,7 @@ impl DefaultModBuilder {
         }
     }
 
+    /// return the [DefaultMod], but panic if it have an error. Use [DefaultModBuilder::get] for a safe alternative
     pub fn unwrap(self) -> DefaultMod {
         self.get().unwrap()
     }

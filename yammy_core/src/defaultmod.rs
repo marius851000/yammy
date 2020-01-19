@@ -8,6 +8,7 @@ use std::collections::BTreeSet;
 use std::collections::HashMap;
 use std::sync::Arc;
 
+/// An implementation of [`ModRead`] and [`ModWrite`]. It can be used to store a mod that can be loaded and saved.
 pub struct DefaultMod {
     metadata: Metadata,
     tabledatamap: Arc<TableDataMap>,
@@ -16,6 +17,7 @@ pub struct DefaultMod {
 }
 
 impl DefaultMod {
+    /// Create a new, empty [`DefaultMod`] with the provided [`Metadata`] and [`TableDataMap`]
     pub fn new(metadata: Metadata, tabledatamap: Arc<TableDataMap>) -> DefaultMod {
         DefaultMod {
             metadata,

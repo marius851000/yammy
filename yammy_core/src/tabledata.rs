@@ -2,8 +2,31 @@ use super::Entry;
 use super::EntryData;
 use crate::errors::*;
 
-/// Store the data about an table
-/// Note: a data entry can't be deleted, as it allow to do some assertion allowind to save memory
+//TODO: definie a table
+/// Store the data about a table in the mod.
+///
+/// It have a builder [crate::builder::TableDataBuilder]
+///
+/// Internally, the various [EntryData] are stored in a Vec, and so have an numerical id ([usize]) associated to them.
+/// It allow to optimize memory comsuption, as [Entry] just need to store their data in a Vec<Entry>, rather than a HashMap<String, Entry>
+///
+/// Some function still allow to pass a string to specify a column of the table, for convenience reason
+///
+/// Note: a data entry cannot be deleted, as it allow to do some assertion allowind to save memory
+///
+/// # Examples
+///
+/// ```
+/// use yammy_core::{TableData, EntryData, EntryType};
+/// //NOTE: it is better to use the builder for this
+/// let mut table_data = TableData::new();
+/// table_data.add_data("name".into(), EntryData::new(EntryType::String));
+/// table_data.add_data("pv".into(), EntryData::new(EntryType::String));
+/// let table_data = table_data;
+/// let name_id = table_data.string_to_id("name".into()).unwrap();
+/// assert_eq!(table_data.id_to_string(name_id).unwrap(), String::from("name"));
+/// assert_eq!(table_data.get_entrydata(name_id).unwrap(), &EntryData::new(EntryType::String));
+/// ```
 #[derive(Default)]
 pub struct TableData {
     id_counter: usize,
@@ -23,8 +46,9 @@ impl TableData {
         self.id_counter
     }
 
-    /// Add an data entry in this [TableData].
-    /// An id is automatically generated
+    /// Add a data entry in this [TableData].
+    ///
+    /// It is added to the end of the column.
     pub fn add_data(&mut self, str: String, entrydata: EntryData) {
         let id = self.id_counter;
         debug_assert_eq!(self.strings.len(), id);
@@ -34,7 +58,7 @@ impl TableData {
         self.entrydatas.push(entrydata);
     }
 
-    /// Return the id corresponding to the given String
+    /// Return the id corresponding to the given String if it exist
     pub fn string_to_id(&self, str: String) -> Option<usize> {
         for id in 0..self.strings.len() {
             if self.strings[id] == str {
@@ -43,7 +67,8 @@ impl TableData {
         }
         None
     }
-    /// Return the String corresponding to the given id
+
+    /// Return the String corresponding to the given id, if it exist
     pub fn id_to_string(&self, id: usize) -> Option<String> {
         if id < self.id_counter {
             Some(self.strings[id].clone())
@@ -52,6 +77,7 @@ impl TableData {
         }
     }
 
+    /// Return the [EntryData] associated with the id in this [TableData]
     pub fn get_entrydata(&self, id: usize) -> Option<&EntryData> {
         if id < self.id_counter {
             Some(&self.entrydatas[id])
@@ -60,6 +86,7 @@ impl TableData {
         }
     }
 
+    /// Check if the entry is valid for this [TableData]. Return an error if it doesn't.
     pub fn check(&self, entry: &Entry) -> Result<()> {
         if entry.len() != self.len() {
             return Err(Error::from(

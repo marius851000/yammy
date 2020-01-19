@@ -1,3 +1,6 @@
+/*#![warn(missing_docs)]
+#![warn(clippy::pedantic)]*/
+//TODO: when I want to enhance the doc
 #![recursion_limit = "1024"] //For error_chain
 #[macro_use]
 extern crate error_chain;

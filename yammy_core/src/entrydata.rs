@@ -2,21 +2,28 @@ use super::EntryValue;
 use crate::errors::*;
 
 #[non_exhaustive]
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
+/// The various type an [`EntryValue`] can hold
 pub enum EntryType {
+    /// A [`String`]
     String,
+    /// An [`u64`]
     Unsigned64,
+    /// A [`f64`]
     Float64,
+    /// A [`bool`]
     Boolean,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Clone)]
+/// Information about a column in a [`crate::TableData`]
 pub struct EntryData {
     entrytype: EntryType,
     default: Option<EntryValue>,
 }
 
 impl EntryData {
+    /// Create a new [`EntryData`], of type [`EntryType`]
     pub fn new(entrytype: EntryType) -> EntryData {
         EntryData {
             entrytype,
@@ -24,12 +31,19 @@ impl EntryData {
         }
     }
 
+    /// Set the default value of this [`EntryData`]
     pub fn default(mut self, default: EntryValue) -> Result<EntryData> {
         self.check(&default)?;
         self.default = Some(default);
         Ok(self)
     }
 
+    /// Return the default value of this [`EntryData`].
+    ///
+    /// If not set, return a sensible default value according with its type:
+    /// - An empty string for [`EntryType::String`]
+    /// - 0 for numerical value
+    /// - false for [`EntryType::Boolean`]
     pub fn get_default(&self) -> EntryValue {
         match &self.default {
             Some(default) => default.clone(),
@@ -42,6 +56,7 @@ impl EntryData {
         }
     }
 
+    /// Return [`Ok`] if the [`EntryValue`] correspond with this [`EntryData`], [`Err`] with the reason otherwise
     pub fn check(&self, value: &EntryValue) -> Result<()> {
         match self.entrytype {
             EntryType::String => match value {

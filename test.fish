@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
-cargo fix
+cargo fix --allow-staged
 cargo fmt
 cargo test
