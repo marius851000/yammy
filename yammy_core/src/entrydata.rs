@@ -13,7 +13,6 @@ pub enum EntryType {
 #[derive(Debug)]
 pub struct EntryData {
     entrytype: EntryType,
-    reference: Option<String>,
     default: Option<EntryValue>,
 }
 
@@ -21,14 +20,8 @@ impl EntryData {
     pub fn new(entrytype: EntryType) -> EntryData {
         EntryData {
             entrytype,
-            reference: None,
             default: None,
         }
-    }
-
-    pub fn reference(mut self, reference: String) -> EntryData {
-        self.reference = Some(reference);
-        self
     }
 
     pub fn default(mut self, default: EntryValue) -> Result<EntryData> {
