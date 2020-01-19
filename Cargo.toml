@@ -1,5 +1,6 @@
 [workspace]
 members = [
 	"yammy_core",
-	"yammy_gui"
+	"yammy_gui",
+	"yammy_gui_cmd"
 ]

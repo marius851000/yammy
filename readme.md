@@ -9,3 +9,5 @@ yammy is a mix of the english word yummy, and yamm: Yet Another Mod Manager (cau
 ## general
 - yammy_core: the core logic of how to manage mod
 - yammy_gui: the core logic for gui
+## gui
+- yammy_gui_cmd: a crate to modify games with a simple command line interface. Mainly for testing purpose.
